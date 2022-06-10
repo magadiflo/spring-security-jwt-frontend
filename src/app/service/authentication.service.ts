@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { JwtHelperService } from "@auth0/angular-jwt";
 

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { User } from '../model/user';
 
 const HOST: string = environment.apiUrl;
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
@@ -28,6 +28,16 @@ export class UserService {
 
   resetPassword(email: string): Observable<any> {
     return this.http.get<any>(`${HOST}/user/reset-password/${email}`);
+  }
+
+  /**
+   ** reportProgress: true, mostrará algún progreso de cualquier solicitud HTTP.
+   ** observe: 'events', debemos usar esta opción si deseamos ver todos los eventos, 
+   **     incluido el progreso de las transferencias. Además, debemos devolver 
+   **     un Observable de tipo HttpEvent.
+   */
+  updateProfileImage(formData: FormData): Observable<HttpEvent<any>> {
+    return this.http.post<User>(`${HOST}/user/update-profile-image`, formData, { reportProgress: true, observe: 'events' });
   }
 
 }

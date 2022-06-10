@@ -6,11 +6,17 @@ import { environment } from '../../environments/environment';
 import { User } from '../model/user';
 
 const HOST: string = environment.apiUrl;
+const USER: string = 'user';
+const USERS: string = 'users';
+const TOKEN: string = 'token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+
+  private token: string = '';
+  private loggedInUsername: string = '';
 
   constructor(private http: HttpClient) { }
 
@@ -24,6 +30,14 @@ export class AuthenticationService {
 
   register(user: User): Observable<User> {
     return this.http.post<User>(`${HOST}/user/register`, user);
+  }
+
+  logOut(): void {
+    this.token = '';
+    this.loggedInUsername = '';
+    localStorage.removeItem(USER);
+    localStorage.removeItem(TOKEN);
+    localStorage.removeItem(USERS);
   }
 
 }

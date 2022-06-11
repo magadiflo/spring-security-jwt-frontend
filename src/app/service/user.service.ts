@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { USERS } from '../constant/global-constant';
 import { environment } from '../../environments/environment';
 import { User } from '../model/user';
 
@@ -42,6 +43,10 @@ export class UserService {
 
   deleteUser(userId: number): Observable<any> {
     return this.http.delete<any>(`${HOST}/user/delete/${userId}`);
+  }
+
+  addUsersToLocalCache(users: User[]): void {
+    localStorage.setItem(USERS, JSON.stringify(users));
   }
 
 }

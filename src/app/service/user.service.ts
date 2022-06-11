@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { USERS } from '../constant/global-constant';
 import { environment } from '../../environments/environment';
 import { User } from '../model/user';
+import { CustomHttpResponse } from '../model/custom-http-response';
 
 const HOST: string = environment.apiUrl;
 
@@ -27,8 +28,8 @@ export class UserService {
     return this.http.post<User>(`${HOST}/user/update`, formData);
   }
 
-  resetPassword(email: string): Observable<any> {
-    return this.http.get<any>(`${HOST}/user/reset-password/${email}`);
+  resetPassword(email: string): Observable<CustomHttpResponse> {
+    return this.http.get<CustomHttpResponse>(`${HOST}/user/reset-password/${email}`);
   }
 
   /**
@@ -41,8 +42,8 @@ export class UserService {
     return this.http.post<User>(`${HOST}/user/update-profile-image`, formData, { reportProgress: true, observe: 'events' });
   }
 
-  deleteUser(userId: number): Observable<any> {
-    return this.http.delete<any>(`${HOST}/user/delete/${userId}`);
+  deleteUser(userId: number): Observable<CustomHttpResponse> {
+    return this.http.delete<CustomHttpResponse>(`${HOST}/user/delete/${userId}`);
   }
 
   addUsersToLocalCache(users: User[]): void {

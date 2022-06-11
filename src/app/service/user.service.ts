@@ -40,4 +40,8 @@ export class UserService {
     return this.http.post<User>(`${HOST}/user/update-profile-image`, formData, { reportProgress: true, observe: 'events' });
   }
 
+  deleteUser(userId: number): Observable<any> {
+    return this.http.delete<any>(`${HOST}/user/delete/${userId}`);
+  }
+
 }

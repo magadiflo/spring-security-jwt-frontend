@@ -53,4 +53,18 @@ export class UserService {
     return localStorage.getItem(USERS) ? JSON.parse(localStorage.getItem(USERS)!) : null;
   }
 
+  createUserFromData(loggedInUsername: string, user: User, profileImage: File): FormData {
+    const formData = new FormData();
+    formData.append('currentUsername', loggedInUsername);
+    formData.append('firstName', user.firstName);
+    formData.append('lastName', user.lastName);
+    formData.append('username', user.username);
+    formData.append('email', user.email);
+    formData.append('role', user.role);
+    formData.append('profileImage', profileImage);
+    formData.append('isActive', JSON.stringify(user.isActive));
+    formData.append('isNonLocked', JSON.stringify(user.isNotLocked));
+    return formData;
+  }
+
 }

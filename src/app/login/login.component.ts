@@ -5,6 +5,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 
 import { NotificationType } from '../enum/notification-type.enum';
+import { HeaderType } from '../enum/header-type.enum';
 import { AuthenticationService } from '../service/authentication.service';
 import { NotificationService } from '../service/notification.service';
 import { User } from '../model/user';
@@ -43,7 +44,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     const loginSub = this.authenticationService.login(user)
       .subscribe({
         next: (resp: HttpResponse<User>) => {
-          const token = resp.headers.get('Jwt-Token');
+          const token = resp.headers.get(HeaderType.JWT_TOKEN);
           this.authenticationService.saveToken(token!);
           this.authenticationService.addUserToLocalCache(resp.body!);
           this.router.navigate(['/user', 'management']);

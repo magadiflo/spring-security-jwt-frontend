@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { NotifierModule } from "angular-notifier";
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+import { NotificationModule } from './notification.module';
 
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
@@ -17,7 +17,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NotifierModule,
+    NotificationModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

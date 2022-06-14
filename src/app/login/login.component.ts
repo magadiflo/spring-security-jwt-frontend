@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Subscription } from 'rxjs';
 
+import { NotificationType } from '../enum/notification-type.enum';
 import { AuthenticationService } from '../service/authentication.service';
 import { NotificationService } from '../service/notification.service';
 import { User } from '../model/user';
@@ -40,14 +41,29 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.showLoading = true;
     console.log(user);
     const loginSub = this.authenticationService.login(user)
-      .subscribe((resp: HttpResponse<User>) => {
-        const token = resp.headers.get('Jwt-Token');
-        this.authenticationService.saveToken(token!);
-        this.authenticationService.addUserToLocalCache(resp.body!);
-        this.router.navigate(['/user', 'management']);
-        this.showLoading = false;
+      .subscribe({
+        next: (resp: HttpResponse<User>) => {
+          const token = resp.headers.get('Jwt-Token');
+          this.authenticationService.saveToken(token!);
+          this.authenticationService.addUserToLocalCache(resp.body!);
+          this.router.navigate(['/user', 'management']);
+          this.showLoading = false;
+        },
+        error: (err: HttpErrorResponse) => {
+          console.log(err);
+          this.sendErrorNotification(NotificationType.ERROR, err.error.message);
+          this.showLoading = false;
+        },
+        complete: () => console.log('Subscripción login() completa!')
       });
 
     this.subscriptions.push(loginSub);
+  }
+
+  sendErrorNotification(notificationType: NotificationType, message: string) {
+    if (!message) {
+      message = 'An error ocurred. Please, try again';
+    }
+    this.notificationService.notify(notificationType, message);
   }
 }

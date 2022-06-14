@@ -9,9 +9,16 @@ import { NotificationModule } from './notification.module';
 
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { UserComponent } from './user/user.component';
+
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
+    RegisterComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,

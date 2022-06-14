@@ -62,7 +62,7 @@ export class AuthenticationService {
     return this.token;
   }
 
-  isLoggedIn(): boolean {
+  isUserLoggedIn(): boolean {
     this.loadToken();
     if (this.token != null && this.token !== '') {
       if (this.jwtHelper.decodeToken(this.token).sub != null && this.jwtHelper.decodeToken(this.token).sub != '') {

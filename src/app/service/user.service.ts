@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { USERS } from '../constant/global-constant';
+import { USERS } from '../constant/global.constant';
 import { environment } from '../../environments/environment';
 import { User } from '../model/user';
 import { CustomHttpResponse } from '../model/custom-http-response';

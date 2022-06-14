@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { JwtHelperService } from "@auth0/angular-jwt";
 
-import { USER, USERS, TOKEN } from '../constant/global-constant';
+import { USER, USERS, TOKEN } from '../constant/global.constant';
 import { environment } from '../../environments/environment';
 import { User } from '../model/user';
 

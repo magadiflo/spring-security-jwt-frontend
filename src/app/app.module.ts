@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { NotifierModule } from "angular-notifier";
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { AuthenticationGuard } from './guard/authentication.guard';
 
 @NgModule({
   declarations: [
@@ -16,8 +17,9 @@ import { AuthenticationGuard } from './guard/authentication.guard';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    NotifierModule,
   ],
-  providers: [AuthenticationGuard,
+  providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

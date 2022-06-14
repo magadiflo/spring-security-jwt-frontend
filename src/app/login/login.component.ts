@@ -1,7 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpResponse } from '@angular/common/http';
+
+import { Subscription } from 'rxjs';
+
 import { AuthenticationService } from '../service/authentication.service';
 import { NotificationService } from '../service/notification.service';
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +14,9 @@ import { NotificationService } from '../service/notification.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
+
+  showLoading: boolean = false;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private router: Router,
@@ -20,11 +28,22 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.router.navigate(['/user', 'management']);
     } else {
       this.router.navigate(['/login']);
-      console.log('abriendo login...');  
+      console.log('abriendo login...');
     }
   }
 
   ngOnDestroy(): void {
 
+  }
+
+  onLogin(user: User): void {
+    this.showLoading = true;
+    console.log(user);
+    const loginSub = this.authenticationService.login(user)
+      .subscribe((resp: HttpResponse<User>) => {
+        const token = resp.headers.get('Jwt-Token');
+      });
+
+    this.subscriptions.push(loginSub);
   }
 }

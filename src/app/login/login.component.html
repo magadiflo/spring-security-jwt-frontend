@@ -25,7 +25,7 @@
                     <div class="d-flex justify-content-center mt-3 login_container">
                         <button type="submit" name="button" class="btn login_btn">
                             <i class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;
-                            <span>Loading...</span>
+                            <span *ngIf="showLoading">Loading...</span>
                             <span>Login</span>
                         </button>
                     </div>

@@ -4,3 +4,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 # Uso de la librería @auth0/angular-jwt ^5.0.2
 https://www.npmjs.com/package/@auth0/angular-jwt
+
+# Angular Notifier ^11.0.0
+https://www.npmjs.com/package/angular-notifier

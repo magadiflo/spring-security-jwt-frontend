@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscriptions.push(loginSub);
   }
 
-  private sendErrorNotification(notificationType: NotificationType, message: string) {
+  private sendErrorNotification(notificationType: NotificationType, message: string): void {
     if (!message) {
       message = 'An error ocurred. Please, try again';
     }

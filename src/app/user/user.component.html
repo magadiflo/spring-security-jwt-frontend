@@ -82,11 +82,11 @@
                         <img height="40" width="40" [src]="user?.profileImageUrl"
                             class="rounded-circle img-fluid img-thumbnail" alt="{{ user.firstName }}">
                     </td>
-                    <td>{{ user.userId }}</td>
-                    <td>{{ user.firstName }}</td>
-                    <td>{{ user.lastName }}</td>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.email }}</td>
+                    <td (click)="onSelectUser(user)">{{ user.userId }}</td>
+                    <td (click)="onSelectUser(user)">{{ user.firstName }}</td>
+                    <td (click)="onSelectUser(user)">{{ user.lastName }}</td>
+                    <td (click)="onSelectUser(user)">{{ user.username }}</td>
+                    <td (click)="onSelectUser(user)">{{ user.email }}</td>
                     <td>
                         <span class="badge bg-success" [hidden]="!user.active">Active</span>
                         <span class="badge bg-danger" [hidden]="user.active">Inactive</span>
@@ -104,5 +104,80 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<!--* Button trigger modal from component -->
+<button type="button" id="openUserInfo" [hidden]="true" aria-label="Open modal with user info" data-bs-toggle="modal"
+    data-bs-target="#viewUserModal"></button>
+
+<!--* Modal user info -->
+<div class="modal fade" id="viewUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="staticBackdropLabel">Martín Díaz</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-sm-auto">
+                                    <div class="mx-auto box-image">
+                                        <div class="d-flex justify-content-center align-items-center rounded">
+                                            <img class="rounded" height="120" width="120" src="" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col d-flex flex-column flex-sm-row justify-content-between">
+                                    <div class="mb-sm-0">
+                                        <h6 class="pt-sm-2 pb-1 mb-0 text-nowrap">Martín Díaz</h6>
+                                        <p class="mb-1">magadiflo</p>
+                                        <div class="">Status:
+                                            <span class="badge bg-success">Active</span>
+                                            <!-- <span class="badge bg-danger">Inactive</span> -->
+                                        </div>
+                                        <div class="text-muted">
+                                            <small>Last Login: 2021-12-05</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-center text-sm-right">
+                                        <div class="text-muted">
+                                            <small>Joined 2020-02-05</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"></li>
+                            <li class="list-group-item details">
+                                23156516 <i class="fa fa-id-badge"></i>
+                            </li>
+                            <li class="list-group-item details">
+                                magadiflo@gmail.com <i class="fa fa-envelope"></i>
+                            </li>
+                            <li class="list-group-item details">
+                                ADMIN <i class="fas fa-shield-alt"></i>
+                            <li class="list-group-item details">
+                                2022-05-05 <i class="fas fa-sign-in-alt"></i>
+                            </li>
+                            <li class="list-group-item details">
+                                <!-- <span>Account Locked</span>
+                                <i class="fa fa-lock float-right text-danger"></i> -->
+                                <span>Account Unlocked</span>
+                                <i class="fa fa-unlock float-right text-success"></i>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>

@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+
+import { NotificationType } from '../enum/notification-type.enum';
+import { User } from '../model/user';
+import { UserService } from '../service/user.service';
+import { NotificationService } from '../service/notification.service';
 
 @Component({
   selector: 'app-user',
@@ -19,9 +25,15 @@ export class UserComponent implements OnInit {
    ** El signo $, es una convención para declarar un observable
    */
   private titleSubject = new BehaviorSubject<string>('Users');
-  titleAction$ = this.titleSubject.asObservable();
+  private subscriptions: Subscription[] = [];
 
-  constructor() { }
+  titleAction$ = this.titleSubject.asObservable();
+  users: User[] = [];
+  refreshing: boolean = false;
+
+  constructor(
+    private userService: UserService,
+    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
   }
@@ -29,6 +41,34 @@ export class UserComponent implements OnInit {
   changeTitle(title: string): void {
     //*Así cambiamos el valor
     this.titleSubject.next(title);
+  }
+
+  getUsers(showNotification: boolean): void {
+    this.refreshing = true;
+    const userSubscription = this.userService.getUsers()
+      .subscribe({
+        next: (resp: User[]) => {
+          this.userService.addUsersToLocalCache(resp);
+          this.users = resp;
+          this.refreshing = false;
+          if (showNotification) {
+            this.sendNotification(NotificationType.SUCCESS, `${resp.length} user(s) loaded successfully`);
+          }
+        },
+        error: (err: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, err.error.message);
+          this.refreshing = false;
+        }
+      });
+
+    this.subscriptions.push(userSubscription);
+  }
+
+  private sendNotification(notificationType: NotificationType, message: string): void {
+    if (!message) {
+      message = 'An error ocurred. Please, try again';
+    }
+    this.notificationService.notify(notificationType, message);
   }
 
 }

@@ -30,7 +30,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.router.navigate(['/user', 'management']);
     } else {
       this.router.navigate(['/login']);
-      console.log('abriendo login...');
     }
   }
 
@@ -40,7 +39,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onLogin(user: User): void {
     this.showLoading = true;
-    console.log(user);
     const loginSub = this.authenticationService.login(user)
       .subscribe({
         next: (resp: HttpResponse<User>) => {
@@ -51,7 +49,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.showLoading = false;
         },
         error: (err: HttpErrorResponse) => {
-          console.log(err);
           this.sendErrorNotification(NotificationType.ERROR, err.error.message);
           this.showLoading = false;
         },

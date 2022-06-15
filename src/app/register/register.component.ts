@@ -35,7 +35,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   onRegister(user: User): void {
-    console.log(user);
     this.showLoading = true;
     const loginSub = this.authenticationService.register(user)
       .subscribe({
@@ -45,7 +44,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
           Please check your email for password to log in.`);
         },
         error: (err: HttpErrorResponse) => {
-          console.log(err);
           this.sendNotification(NotificationType.ERROR, err.error.message);
           this.showLoading = false;
         },

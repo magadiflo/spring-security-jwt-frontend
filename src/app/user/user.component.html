@@ -4,7 +4,7 @@
         </div>
         <div class="col-md-4">
             <h5>User Management Portal</h5>
-            <h6 class="lead">title</h6>
+            <h6 class="lead" *ngIf="titleAction$ | async as title">{{ title }}</h6>
         </div>
         <div class="col-md-4">
         </div>
@@ -22,19 +22,19 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#users">
+                        <a class="nav-link text-white" (click)="changeTitle('Users')">
                             <i class="fa fa-users"></i> Users
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#reset-password">
+                        <a class="nav-link text-white" (click)="changeTitle('Settings')">
                             <i class="fa fa-cogs"></i> Settings
                         </a>
                     </li>
                 </ul>
                 <ul class="navbar-nav  mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#profile">
+                        <a class="nav-link text-white" (click)="changeTitle('Profile')">
                             Welcome, magadiflo <i class="fa fa-user"></i>
                         </a>
                     </li>

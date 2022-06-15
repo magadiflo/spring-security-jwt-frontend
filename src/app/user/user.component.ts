@@ -36,6 +36,7 @@ export class UserComponent implements OnInit {
     private notificationService: NotificationService) { }
 
   ngOnInit(): void {
+    this.getUsers(true);
   }
 
   changeTitle(title: string): void {

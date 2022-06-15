@@ -12,7 +12,7 @@ export class User {
         public joinDate: Date | null = null,
         public role: string = '',
         public authorities: string[] = [],
-        public isActive: boolean = false,
-        public isNotLocked: boolean = false) { }
+        public active: boolean = false,
+        public notLocked: boolean = false) { }
 
 }

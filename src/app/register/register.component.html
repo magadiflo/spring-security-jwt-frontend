@@ -45,7 +45,7 @@
                         <input type="text" class="form-control" name="email" placeholder="Email" required ngModel
                             #emailInput="ngModel">
                     </div>
-                    <span class="help-block" *ngIf="emailInput.invalid && emailInput.touched">
+                    <span class="help-block text-danger" *ngIf="emailInput.invalid && emailInput.touched">
                         Please enter an email.
                     </span>
                     <div class="d-flex justify-content-center mt-3 login_container">

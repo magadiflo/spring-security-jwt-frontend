@@ -71,7 +71,7 @@ export class UserComponent implements OnInit {
 
   onSelectUser(selectedUser: User): void {
     this.selectedUser = selectedUser;
-    document.getElementById('openUserInfo')?.click();
+    this.clickButton('openUserInfo');
   }
 
   onProfileImageChange(event: Event): void {
@@ -82,7 +82,7 @@ export class UserComponent implements OnInit {
   }
 
   saveNewUser(): void {
-    document.getElementById('new-user-save')?.click();
+    this.clickButton('new-user-save');
   }
 
   onAddNewUser(userForm: NgForm): void {
@@ -90,11 +90,12 @@ export class UserComponent implements OnInit {
     const userSaveSubscription = this.userService.addUser(formData)
       .subscribe({
         next: (user: User) => {
-          document.getElementById('new-user-close')?.click();
+          this.clickButton('new-user-close');
           this.getUsers(false);
           this.fileName = '';
           this.profileImage = null;
           userForm.reset();
+          userForm.form.controls['role'].setValue('ROLE_USER'); //by default
           this.sendNotification(NotificationType.SUCCESS, `${user.firstName} ${user.lastName} updated successfully`);
         },
         error: (err: HttpErrorResponse) => {
@@ -110,6 +111,10 @@ export class UserComponent implements OnInit {
       message = 'An error ocurred. Please, try again';
     }
     this.notificationService.notify(notificationType, message);
+  }
+
+  private clickButton(buttonId: string): void {
+    document.getElementById(buttonId)?.click();
   }
 
 }

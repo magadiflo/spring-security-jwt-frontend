@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
 
 import { NotificationType } from '../enum/notification-type.enum';
 import { User } from '../model/user';
@@ -32,7 +33,7 @@ export class UserComponent implements OnInit {
   refreshing: boolean = false;
   selectedUser!: User;
   fileName: string = '';
-  profileImage!: File;
+  profileImage: File | null = null;
 
   constructor(
     private userService: UserService,
@@ -82,6 +83,26 @@ export class UserComponent implements OnInit {
 
   saveNewUser(): void {
     document.getElementById('new-user-save')?.click();
+  }
+
+  onAddNewUser(userForm: NgForm): void {
+    const formData: FormData = this.userService.createUserFromData('', userForm.value, this.profileImage!);
+    const userSaveSubscription = this.userService.addUser(formData)
+      .subscribe({
+        next: (user: User) => {
+          document.getElementById('new-user-close')?.click();
+          this.getUsers(false);
+          this.fileName = '';
+          this.profileImage = null;
+          userForm.reset();
+          this.sendNotification(NotificationType.SUCCESS, `${user.firstName} ${user.lastName} updated successfully`);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, err.error.message);
+        }
+      });
+
+    this.subscriptions.push(userSaveSubscription);
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {

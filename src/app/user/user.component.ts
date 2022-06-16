@@ -100,10 +100,23 @@ export class UserComponent implements OnInit {
         },
         error: (err: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, err.error.message);
+          this.profileImage = null;
         }
       });
 
     this.subscriptions.push(userSaveSubscription);
+  }
+
+  searchUsers(searchTerm: string): void {
+    const results: User[] = [];
+    for (const user of this.userService.getUsersFromLocalCache() || []) {
+      if (user.firstName.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
+        user.lastName.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
+        user.username.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
+        user.userId.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
+        results.push(user);
+      }
+    }
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {

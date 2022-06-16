@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 
 import { NotificationType } from '../enum/notification-type.enum';
+import { CustomHttpResponse } from '../model/custom-http-response';
 import { User } from '../model/user';
 import { UserService } from '../service/user.service';
 import { NotificationService } from '../service/notification.service';
@@ -149,6 +150,25 @@ export class UserComponent implements OnInit {
       });
 
     this.subscriptions.push(userUpdateSubscription);
+  }
+
+  onDeleteUser(user: User): void {
+    if(!confirm(`¿You want delete the user ${user.firstName} ${user.lastName}?`)){
+      return;
+    }
+    const userDeleteSubscription = this.userService.deleteUser(user.id!)
+      .subscribe({
+        next: (resp: CustomHttpResponse) => {
+          this.sendNotification(NotificationType.SUCCESS, resp.message);
+          this.getUsers(false);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, err.error.message);
+          this.profileImage = null;
+        }
+      });
+
+    this.subscriptions.push(userDeleteSubscription);
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {

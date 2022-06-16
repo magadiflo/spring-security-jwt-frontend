@@ -27,6 +27,7 @@ export class UserComponent implements OnInit {
    */
   private titleSubject = new BehaviorSubject<string>('Users');
   private subscriptions: Subscription[] = [];
+  private currentUsername!: string;
 
   titleAction$ = this.titleSubject.asObservable();
   users: User[] = [];
@@ -34,6 +35,7 @@ export class UserComponent implements OnInit {
   selectedUser!: User;
   fileName: string = '';
   profileImage: File | null = null;
+  editUser: User = new User();
 
   constructor(
     private userService: UserService,
@@ -122,6 +124,12 @@ export class UserComponent implements OnInit {
     if (results.length === 0 || !searchTerm) {
       this.users = this.userService.getUsersFromLocalCache() || [];
     }
+  }
+
+  onEditUser(editUser: User): void {
+    this.editUser = editUser;
+    this.currentUsername = editUser.username;
+    this.clickButton('openUserEdit');
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {

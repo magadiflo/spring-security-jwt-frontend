@@ -94,7 +94,7 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-outline-info" aria-label="Edit user">
+                            <button type="button" class="btn btn-outline-info" aria-label="Edit user" (click)="onEditUser(user)">
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button type="button" class="btn btn-outline-danger" aria-label="Delete user">
@@ -107,9 +107,12 @@
         </table>
     </div>
 
-    <!--* Button trigger modal from component -->
+    <!--* Button trigger modal for show user info -->
     <button type="button" id="openUserInfo" [hidden]="true" aria-label="Open modal with user info"
         data-bs-toggle="modal" data-bs-target="#viewUserModal"></button>
+    <!--* Button trigger modal for edit user  -->
+    <button type="button" id="openUserEdit" [hidden]="true" aria-label="Open modal for edit user"
+        data-bs-toggle="modal" data-bs-target="#editUserModal"></button>
 
     <!--* Modal user info -->
     <div class="modal fade" id="viewUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

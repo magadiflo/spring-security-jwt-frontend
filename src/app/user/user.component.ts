@@ -31,6 +31,8 @@ export class UserComponent implements OnInit {
   users: User[] = [];
   refreshing: boolean = false;
   selectedUser!: User;
+  fileName: string = '';
+  profileImage!: File;
 
   constructor(
     private userService: UserService,
@@ -71,8 +73,15 @@ export class UserComponent implements OnInit {
     document.getElementById('openUserInfo')?.click();
   }
 
-  onProfileImageChange(event: any): void {
-    console.log(event);
+  onProfileImageChange(event: Event): void {
+    const target = (event.target as HTMLInputElement);
+    this.fileName = target.files![0].name;
+    this.profileImage = target.files![0];
+
+  }
+
+  saveNewUser(): void {
+    document.getElementById('new-user-save')?.click();
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {

@@ -94,7 +94,8 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-outline-info" aria-label="Edit user" (click)="onEditUser(user)">
+                            <button type="button" class="btn btn-outline-info" aria-label="Edit user"
+                                (click)="onEditUser(user)">
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button type="button" class="btn btn-outline-danger" aria-label="Delete user">
@@ -111,8 +112,8 @@
     <button type="button" id="openUserInfo" [hidden]="true" aria-label="Open modal with user info"
         data-bs-toggle="modal" data-bs-target="#viewUserModal"></button>
     <!--* Button trigger modal for edit user  -->
-    <button type="button" id="openUserEdit" [hidden]="true" aria-label="Open modal for edit user"
-        data-bs-toggle="modal" data-bs-target="#editUserModal"></button>
+    <button type="button" id="openUserEdit" [hidden]="true" aria-label="Open modal for edit user" data-bs-toggle="modal"
+        data-bs-target="#editUserModal"></button>
 
     <!--* Modal user info -->
     <div class="modal fade" id="viewUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -275,6 +276,89 @@
             </div>
         </div>
     </div>
+
+    <!--* Modal edit user -->
+    <div class="modal fade" id="editUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center">Edit {{ editUser.firstName }} {{ editUser.lastName }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form #editUserForm="ngForm">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" name="firstName" class="form-control" required
+                                    [(ngModel)]="editUser.firstName">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" name="lastName" class="form-control" required
+                                    [(ngModel)]="editUser.lastName">
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" name="username" class="form-control" required
+                                    [(ngModel)]="editUser.username">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" class="form-control" required
+                                    [(ngModel)]="editUser.email">
+                            </div>
+                            <div class="form-group">
+                                <label for="authority">Role</label>
+                                <select name="role" class="form-select" required [(ngModel)]="editUser.role">
+                                    <option value="ROLE_USER">USER</option>
+                                    <option value="ROLE_HR">HR</option>
+                                    <option value="ROLE_MANAGER">MANAGER</option>
+                                    <option value="ROLE_ADMIN">ADMIN</option>
+                                    <option value="ROLE_SUPER_ADMIN">SUPER ADMIN</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="custom-file-label">
+                                    <span [hidden]="!fileName">{{ fileName }}</span>
+                                    <span [hidden]="fileName">Choose File</span>
+                                </label>
+                                <div class="input-group">
+                                    <input type="file" accept="image/*" name="profileImage" class="form-control"
+                                        (change)="onProfileImageChange($event)">
+                                    <span class="input-group-text">Browse</span>
+                                </div>
+                            </div>
+                            <fieldset class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="active" class="form-check-input"
+                                            [(ngModel)]="editUser.active">
+                                        Active
+                                    </label>
+                                </div>
+                                <div class="form-check disabled">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="notLocked" class="form-check-input"
+                                            [(ngModel)]="editUser.notLocked">
+                                        Unlocked
+                                    </label>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="close-edit-user-modal-button"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" [disabled]="editUserForm.invalid"
+                        (click)="onUpdateUser()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 </div>

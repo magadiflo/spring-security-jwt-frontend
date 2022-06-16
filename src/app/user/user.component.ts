@@ -80,7 +80,6 @@ export class UserComponent implements OnInit {
     const target = (event.target as HTMLInputElement);
     this.fileName = target.files![0].name;
     this.profileImage = target.files![0];
-
   }
 
   saveNewUser(): void {
@@ -98,7 +97,7 @@ export class UserComponent implements OnInit {
           this.profileImage = null;
           userForm.reset();
           userForm.form.controls['role'].setValue('ROLE_USER'); //by default
-          this.sendNotification(NotificationType.SUCCESS, `${user.firstName} ${user.lastName} updated successfully`);
+          this.sendNotification(NotificationType.SUCCESS, `${user.firstName} ${user.lastName} added successfully`);
         },
         error: (err: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, err.error.message);
@@ -130,6 +129,26 @@ export class UserComponent implements OnInit {
     this.editUser = editUser;
     this.currentUsername = editUser.username;
     this.clickButton('openUserEdit');
+  }
+
+  onUpdateUser(): void {
+    const formData: FormData = this.userService.createUserFromData(this.currentUsername, this.editUser, this.profileImage!);
+    const userUpdateSubscription = this.userService.updateUser(formData)
+      .subscribe({
+        next: (user: User) => {
+          this.clickButton('close-edit-user-modal-button');
+          this.getUsers(false);
+          this.fileName = '';
+          this.profileImage = null;
+          this.sendNotification(NotificationType.SUCCESS, `${user.firstName} ${user.lastName} updated successfully`);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, err.error.message);
+          this.profileImage = null;
+        }
+      });
+
+    this.subscriptions.push(userUpdateSubscription);
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {

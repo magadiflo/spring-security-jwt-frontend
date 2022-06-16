@@ -117,7 +117,9 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-center" id="staticBackdropLabel">Martín Díaz</h5>
+                <h5 class="modal-title text-center" id="staticBackdropLabel">
+                    {{ selectedUser?.firstName + ' ' + selectedUser?.lastName}}
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -128,25 +130,29 @@
                                 <div class="col-12 col-sm-auto">
                                     <div class="mx-auto box-image">
                                         <div class="d-flex justify-content-center align-items-center rounded">
-                                            <img class="rounded" height="120" width="120" src="" alt="">
+                                            <img class="rounded" height="120" width="120"
+                                                [src]="selectedUser?.profileImageUrl" [alt]="selectedUser?.firstName">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col d-flex flex-column flex-sm-row justify-content-between">
                                     <div class="mb-sm-0">
-                                        <h6 class="pt-sm-2 pb-1 mb-0 text-nowrap">Martín Díaz</h6>
-                                        <p class="mb-1">magadiflo</p>
+                                        <h6 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{ selectedUser?.firstName + ' ' +
+                                            selectedUser?.lastName}}</h6>
+                                        <p class="mb-1">{{ selectedUser?.username }}</p>
                                         <div class="">Status:
-                                            <span class="badge bg-success">Active</span>
-                                            <!-- <span class="badge bg-danger">Inactive</span> -->
+                                            <span [hidden]="!selectedUser?.active"
+                                                class="badge bg-success">Active</span>
+                                            <span [hidden]="selectedUser?.active"
+                                                class="badge bg-danger">Inactive</span>
                                         </div>
                                         <div class="text-muted">
-                                            <small>Last Login: 2021-12-05</small>
+                                            <small>Last Login: {{ selectedUser?.lastLoginDate | date: 'medium'}}</small>
                                         </div>
                                     </div>
                                     <div class="text-center text-sm-right">
                                         <div class="text-muted">
-                                            <small>Joined 2020-02-05</small>
+                                            <small>Joined {{ selectedUser?.joinDate | date: 'mediumDate'}}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -155,21 +161,27 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item"></li>
                             <li class="list-group-item details">
-                                23156516 <i class="fa fa-id-badge"></i>
+                                {{ selectedUser?.userId }} <i class="fa fa-id-badge"></i>
                             </li>
                             <li class="list-group-item details">
-                                magadiflo@gmail.com <i class="fa fa-envelope"></i>
+                                {{ selectedUser?.email }} <i class="fa fa-envelope"></i>
                             </li>
                             <li class="list-group-item details">
-                                ADMIN <i class="fas fa-shield-alt"></i>
-                            <li class="list-group-item details">
-                                2022-05-05 <i class="fas fa-sign-in-alt"></i>
+                                {{ selectedUser?.role?.substring(5) }} 
+                                <i class="fas fa-shield-alt"></i>
+                            <li class="list-group-item details" *ngIf="selectedUser?.lastLoginDateDisplay">
+                                {{ selectedUser?.lastLoginDateDisplay | date: 'medium' }} 
+                                <i class="fas fa-sign-in-alt"></i>
                             </li>
-                            <li class="list-group-item details">
-                                <!-- <span>Account Locked</span>
-                                <i class="fa fa-lock float-right text-danger"></i> -->
-                                <span>Account Unlocked</span>
-                                <i class="fa fa-unlock float-right text-success"></i>
+                            <li class="list-group-item">
+                                <div class="details" [hidden]="selectedUser?.notLocked">
+                                    <span>Account Locked</span>
+                                    <i class="fa fa-lock float-right text-danger"></i>
+                                </div>
+                                <div class="details" [hidden]="!selectedUser?.notLocked">
+                                    <span>Account Unlocked</span>
+                                    <i class="fa fa-unlock float-right text-success"></i>
+                                </div>
                             </li>
                         </ul>
                     </div>

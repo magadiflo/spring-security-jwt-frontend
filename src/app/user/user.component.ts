@@ -153,7 +153,7 @@ export class UserComponent implements OnInit {
   }
 
   onDeleteUser(user: User): void {
-    if(!confirm(`¿You want delete the user ${user.firstName} ${user.lastName}?`)){
+    if (!confirm(`¿You want delete the user ${user.firstName} ${user.lastName}?`)) {
       return;
     }
     const userDeleteSubscription = this.userService.deleteUser(user.id!)
@@ -164,11 +164,29 @@ export class UserComponent implements OnInit {
         },
         error: (err: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, err.error.message);
-          this.profileImage = null;
         }
       });
 
     this.subscriptions.push(userDeleteSubscription);
+  }
+
+  onResetPassword(emailForm: NgForm): void {
+    this.refreshing = true;
+    const emailAdress = emailForm.controls['email'].value;
+    const userResetPassSubscription = this.userService.resetPassword(emailAdress)
+      .subscribe({
+        next: (resp: CustomHttpResponse) => {
+          this.sendNotification(NotificationType.SUCCESS, resp.message);
+          this.refreshing = false;
+        },
+        error: (err: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, err.error.message);
+          this.refreshing = false;
+        },
+        complete: () => emailForm.reset()
+      });
+
+    this.subscriptions.push(userResetPassSubscription);
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {

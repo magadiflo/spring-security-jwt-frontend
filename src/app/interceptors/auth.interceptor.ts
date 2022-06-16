@@ -19,8 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (request.url.includes(`${HOST}/user/login`) ||
-      request.url.includes(`${HOST}/user/register`) ||
-      request.url.includes(`${HOST}/user/reset-password`)) {
+      request.url.includes(`${HOST}/user/register`)) {
       return next.handle(request);
     }
 

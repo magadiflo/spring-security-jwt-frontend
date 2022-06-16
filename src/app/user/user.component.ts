@@ -172,7 +172,7 @@ export class UserComponent implements OnInit {
 
   onResetPassword(emailForm: NgForm): void {
     this.refreshing = true;
-    const emailAdress = emailForm.controls['email'].value;
+    const emailAdress = emailForm.controls['reset-password-email'].value;
     const userResetPassSubscription = this.userService.resetPassword(emailAdress)
       .subscribe({
         next: (resp: CustomHttpResponse) => {
@@ -180,7 +180,7 @@ export class UserComponent implements OnInit {
           this.refreshing = false;
         },
         error: (err: HttpErrorResponse) => {
-          this.sendNotification(NotificationType.ERROR, err.error.message);
+          this.sendNotification(NotificationType.WARNING, err.error.message);
           this.refreshing = false;
         },
         complete: () => emailForm.reset()

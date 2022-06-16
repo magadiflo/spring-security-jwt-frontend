@@ -71,6 +71,10 @@ export class UserComponent implements OnInit {
     document.getElementById('openUserInfo')?.click();
   }
 
+  onProfileImageChange(event: any): void {
+    console.log(event);
+  }
+
   private sendNotification(notificationType: NotificationType, message: string): void {
     if (!message) {
       message = 'An error ocurred. Please, try again';

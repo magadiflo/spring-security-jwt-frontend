@@ -243,7 +243,8 @@
                                     <span [hidden]="false">Choose File</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="file" accept="image/*" name="profileImage" class="form-control">
+                                    <input type="file" accept="image/*" name="profileImage" class="form-control"
+                                        (change)="onProfileImageChange($event)">
                                     <span class="input-group-text">Browse</span>
                                 </div>
                             </div>

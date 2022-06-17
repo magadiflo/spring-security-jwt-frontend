@@ -165,7 +165,7 @@ export class UserComponent implements OnInit {
     if (!confirm(`¿You want delete the user ${user.firstName} ${user.lastName}?`)) {
       return;
     }
-    const userDeleteSubscription = this.userService.deleteUser(user.id!)
+    const userDeleteSubscription = this.userService.deleteUser(user.username)
       .subscribe({
         next: (resp: CustomHttpResponse) => {
           this.sendNotification(NotificationType.SUCCESS, resp.message);

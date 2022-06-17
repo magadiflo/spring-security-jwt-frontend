@@ -168,7 +168,7 @@
                                             </div>
                                             <div class="tab-content pt-3">
                                                 <div class="tab-pane active">
-                                                    <form class="form" novalidate>
+                                                    <form class="form" #profileForm="ngForm" (submit)="onUpdateCurrentUser(profileForm)" novalidate>
                                                         <div class="row">
                                                             <div class="col">
                                                                 <div class="row">

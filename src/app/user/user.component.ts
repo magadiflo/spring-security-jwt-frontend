@@ -46,7 +46,7 @@ export class UserComponent implements OnInit {
     private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.user = this.authenticationService.getUserFromLocalCache();
+    this.loadUserFromCache();
     this.getUsers(true);
   }
 
@@ -193,6 +193,31 @@ export class UserComponent implements OnInit {
     this.subscriptions.push(userResetPassSubscription);
   }
 
+  onUpdateCurrentUser(profileForm: NgForm): void {
+    this.refreshing = true;
+    this.currentUsername = this.authenticationService.getUserFromLocalCache().username;
+    const formData: FormData = this.userService.createUserFromData(this.currentUsername, profileForm.value, this.profileImage!);
+    const userUpdateSubscription = this.userService.updateUser(formData)
+      .subscribe({
+        next: (user: User) => {
+          this.authenticationService.addUserToLocalCache(user);
+          this.loadUserFromCache();
+          this.getUsers(false);
+          this.fileName = '';
+          this.profileImage = null;
+          this.refreshing = false;
+          this.sendNotification(NotificationType.SUCCESS, `${user.firstName} ${user.lastName} updated successfully`);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, err.error.message);
+          this.profileImage = null;
+          this.refreshing = false;
+        }
+      });
+
+    this.subscriptions.push(userUpdateSubscription);
+  }
+
   private sendNotification(notificationType: NotificationType, message: string): void {
     if (!message) {
       message = 'An error ocurred. Please, try again';
@@ -202,6 +227,10 @@ export class UserComponent implements OnInit {
 
   private clickButton(buttonId: string): void {
     document.getElementById(buttonId)?.click();
+  }
+
+  private loadUserFromCache(): void {
+    this.user = this.authenticationService.getUserFromLocalCache();
   }
 
 }

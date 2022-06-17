@@ -447,7 +447,7 @@
                                     <span [hidden]="fileName">Choose File</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="file" accept="image/*" name="profileImage" class="form-control"
+                                    <input type="file" accept="image/jpeg, image/png, image/gif" name="profileImage" class="form-control"
                                         (change)="onProfileImageChange($event)">
                                     <span class="input-group-text">Browse</span>
                                 </div>
@@ -528,7 +528,7 @@
                                     <span [hidden]="fileName">Choose File</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="file" accept="image/*" name="profileImage" class="form-control"
+                                    <input type="file" accept="image/jpeg, image/png, image/gif" name="profileImage" class="form-control"
                                         (change)="onProfileImageChange($event)">
                                     <span class="input-group-text">Browse</span>
                                 </div>
@@ -564,7 +564,7 @@
 
     <!--* Profile image change form  -->
     <form enctype="multipart/form-data" class="d-none">
-        <input type="file" name="profile-image-input" id="profile-image-input" placeholder="file" accept="image/*"
+        <input type="file" name="profile-image-input" id="profile-image-input" placeholder="file" accept="image/jpeg, image/png, image/gif"
             (change)="onProfileImageChange($event); onUpdateProfileImage()">
     </form>
 </div>

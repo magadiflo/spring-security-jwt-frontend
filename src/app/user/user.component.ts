@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { HttpErrorResponse, HttpEvent } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { NotificationType } from '../enum/notification-type.enum';
+import { FileUploadStatus } from '../model/file-upload.status';
 import { CustomHttpResponse } from '../model/custom-http-response';
 import { User } from '../model/user';
 import { UserService } from '../service/user.service';
@@ -40,6 +41,8 @@ export class UserComponent implements OnInit {
   selectedUser!: User;
   editUser: User = new User();
   user!: User;
+  fileStatus = new FileUploadStatus();
+
 
   constructor(
     private userService: UserService,
@@ -237,8 +240,7 @@ export class UserComponent implements OnInit {
     const updateProfileImageSubscription = this.userService.updateProfileImage(formData)
       .subscribe({
         next: (event: HttpEvent<any>) => {
-          this.reportUploadProgress(event);  
-          this.sendNotification(NotificationType.SUCCESS, `Profile image updated successfully`);
+          this.reportUploadProgress(event);
         },
         error: (err: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, err.error.message);
@@ -264,7 +266,26 @@ export class UserComponent implements OnInit {
   }
 
   private reportUploadProgress(event: HttpEvent<any>): void {
-
+    switch (event.type) {
+      case HttpEventType.UploadProgress:
+        this.fileStatus.percentage = Math.round(event.loaded / event.total! * 100);
+        this.fileStatus.status = 'progress';
+        break;
+      case HttpEventType.Response:
+        if (event.status === 200) {
+          console.log(event.body);
+          //?time=${new Date().getMilliseconds()}, con esto lo obligamos a que actualice la iamgen
+          this.user.profileImageUrl = `${event.body.profileImageUrl}?time=${new Date().getMilliseconds()}`;
+          this.sendNotification(NotificationType.SUCCESS, `${event.body.firstName}\'s profile image updated successfully`);
+          this.fileStatus.status = 'done';
+        } else {
+          this.sendNotification(NotificationType.ERROR, `Unable to upload image. Please try again`);
+        }
+        break;
+      default:
+        console.log(`Finished all processes`);
+        break;
+    }
   }
 
 }

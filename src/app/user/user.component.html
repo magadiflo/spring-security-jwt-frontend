@@ -132,11 +132,12 @@
                                                             <img class="rounded" height="135" width="135"
                                                                 [src]="user.profileImageUrl" alt="{{ user.username }}">
                                                         </div>
-                                                        <div class="progress mt-1">
+                                                        <div *ngIf="fileStatus.status === 'progress'" class="progress mt-1">
                                                             <div class="progress-bar bg-info" role="progressbar"
                                                                 aria-label="Upload image progress" aria-valuenow="0"
-                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                50%
+                                                                aria-valuemin="0" aria-valuemax="100" 
+                                                                [style.width.%]="fileStatus.percentage">
+                                                                {{ fileStatus.percentage }}%
                                                             </div>
                                                         </div>
                                                     </div>

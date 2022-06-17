@@ -244,6 +244,7 @@ export class UserComponent implements OnInit {
         },
         error: (err: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, err.error.message);
+          this.fileStatus.status = 'done';
         }
       });
 
@@ -273,9 +274,16 @@ export class UserComponent implements OnInit {
         break;
       case HttpEventType.Response:
         if (event.status === 200) {
-          console.log(event.body);
-          //?time=${new Date().getMilliseconds()}, con esto lo obligamos a que actualice la iamgen
-          this.user.profileImageUrl = `${event.body.profileImageUrl}?time=${new Date().getMilliseconds()}`;
+          console.log('User: ', event.body);
+          //* Con esta opción que se agregó: ?time=${new Date().getTime()}, 
+          //* obligamos a que se actualice la imagen ya que la url siempre va a ser diferente.
+          //* Es decir, si no se agrega esa opción, la url siempre será: http://localhost:8081/user/image/magadiflo/magadiflo.jpg
+          //* Lo que significa que si actualizamos a una nueva imagen, esta no cambiará ya que la url siempre es la misma.
+          //* Ahora, con la opción que le agregamos, haremos que la url se vea así: http://localhost:8081/user/image/magadiflo/magadiflo.jpg?time=1655441670049
+          //* obligando a la variable time tener siempre un valor distinto, y por lo tanto toda la url también será distinto,
+          //* de esa forma se fuerza a que la imagen se actualice.
+          //* Únicamente usamos esa opción como un artificio para actualizar la imagen.
+          this.user.profileImageUrl = `${event.body.profileImageUrl}?time=${new Date().getTime()}`;
           this.sendNotification(NotificationType.SUCCESS, `${event.body.firstName}\'s profile image updated successfully`);
           this.fileStatus.status = 'done';
         } else {

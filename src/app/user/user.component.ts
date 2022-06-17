@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { NotificationType } from '../enum/notification-type.enum';
 import { CustomHttpResponse } from '../model/custom-http-response';
@@ -43,7 +44,8 @@ export class UserComponent implements OnInit {
   constructor(
     private userService: UserService,
     private notificationService: NotificationService,
-    private authenticationService: AuthenticationService) { }
+    private authenticationService: AuthenticationService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.loadUserFromCache();
@@ -216,6 +218,12 @@ export class UserComponent implements OnInit {
       });
 
     this.subscriptions.push(userUpdateSubscription);
+  }
+
+  onLogout(): void {
+    this.authenticationService.logOut();
+    this.router.navigate(['/login']);
+    this.sendNotification(NotificationType.SUCCESS, `You've been successfully logged out`);
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {

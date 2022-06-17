@@ -237,6 +237,7 @@ export class UserComponent implements OnInit {
     const updateProfileImageSubscription = this.userService.updateProfileImage(formData)
       .subscribe({
         next: (event: HttpEvent<any>) => {
+          this.reportUploadProgress(event);  
           this.sendNotification(NotificationType.SUCCESS, `Profile image updated successfully`);
         },
         error: (err: HttpErrorResponse) => {
@@ -260,6 +261,10 @@ export class UserComponent implements OnInit {
 
   private loadUserFromCache(): void {
     this.user = this.authenticationService.getUserFromLocalCache();
+  }
+
+  private reportUploadProgress(event: HttpEvent<any>): void {
+
   }
 
 }

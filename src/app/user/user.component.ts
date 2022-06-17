@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -231,7 +231,20 @@ export class UserComponent implements OnInit {
   }
 
   onUpdateProfileImage(): void {
+    const formData = new FormData();
+    formData.append('username', this.user.username);
+    formData.append('profileImage', this.profileImage!);
+    const updateProfileImageSubscription = this.userService.updateProfileImage(formData)
+      .subscribe({
+        next: (event: HttpEvent<any>) => {
+          this.sendNotification(NotificationType.SUCCESS, `Profile image updated successfully`);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, err.error.message);
+        }
+      });
 
+    this.subscriptions.push(updateProfileImageSubscription);
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {

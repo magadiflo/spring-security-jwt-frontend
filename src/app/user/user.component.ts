@@ -8,6 +8,7 @@ import { CustomHttpResponse } from '../model/custom-http-response';
 import { User } from '../model/user';
 import { UserService } from '../service/user.service';
 import { NotificationService } from '../service/notification.service';
+import { AuthenticationService } from '../service/authentication.service';
 
 @Component({
   selector: 'app-user',
@@ -31,18 +32,21 @@ export class UserComponent implements OnInit {
   private currentUsername!: string;
 
   titleAction$ = this.titleSubject.asObservable();
-  users: User[] = [];
   refreshing: boolean = false;
-  selectedUser!: User;
   fileName: string = '';
   profileImage: File | null = null;
+  users: User[] = [];
+  selectedUser!: User;
   editUser: User = new User();
+  user!: User;
 
   constructor(
     private userService: UserService,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService,
+    private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
+    this.user = this.authenticationService.getUserFromLocalCache();
     this.getUsers(true);
   }
 

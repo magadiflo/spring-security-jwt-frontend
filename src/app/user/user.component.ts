@@ -226,6 +226,14 @@ export class UserComponent implements OnInit {
     this.sendNotification(NotificationType.SUCCESS, `You've been successfully logged out`);
   }
 
+  updateProfileImage(): void {
+    this.clickButton('profile-image-input');
+  }
+
+  onUpdateProfileImage(): void {
+
+  }
+
   private sendNotification(notificationType: NotificationType, message: string): void {
     if (!message) {
       message = 'An error ocurred. Please, try again';

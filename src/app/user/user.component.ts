@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
@@ -18,7 +18,7 @@ import { AuthenticationService } from '../service/authentication.service';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
 
   /**
    ** BehaviorSubject, es un tipo de Observable que emite múltiples valores a uno 
@@ -56,6 +56,9 @@ export class UserComponent implements OnInit {
     this.getUsers(true);
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 
   get isAdmin(): boolean {
     return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;

@@ -4,6 +4,7 @@ import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/htt
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Role } from '../enum/role.enum';
 import { NotificationType } from '../enum/notification-type.enum';
 import { FileUploadStatus } from '../model/file-upload.status';
 import { CustomHttpResponse } from '../model/custom-http-response';
@@ -54,6 +55,16 @@ export class UserComponent implements OnInit {
     this.loadUserFromCache();
     this.getUsers(true);
   }
+
+
+  get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  get isManager(): boolean {
+    return this.isAdmin || this.getUserRole() === Role.MANAGER;
+  }
+
 
   changeTitle(title: string): void {
     //*Así cambiamos el valor
@@ -294,6 +305,10 @@ export class UserComponent implements OnInit {
         console.log(`Finished all processes`);
         break;
     }
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
   }
 
 }

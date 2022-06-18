@@ -40,7 +40,8 @@
                             placeholder="Search users..." ngModel
                             (ngModelChange)="searchUsers(searchForm.value.searchTerm.trim())">
                     </form>
-                    <button *ngIf="isAdminOrManager" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                    <button *ngIf="isAdminOrManager" type="button" class="btn btn-info" data-bs-toggle="modal"
+                        data-bs-target="#addUserModal">
                         <i class="fa fa-plus"></i> New User
                     </button>
                 </div>
@@ -85,8 +86,8 @@
                                     (click)="onEditUser(user)">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button *ngIf="isAdmin" type="button" class="btn btn-outline-danger" aria-label="Delete user"
-                                    (click)="onDeleteUser(user)">
+                                <button *ngIf="isAdmin" type="button" class="btn btn-outline-danger"
+                                    aria-label="Delete user" (click)="onDeleteUser(user)">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -95,7 +96,8 @@
                 </tbody>
             </table>
         </div>
-        <div *ngIf="isAdmin" class="tab-pane fade" id="reset-password" role="tabpanel" aria-labelledby="pills-settings-tab">
+        <div *ngIf="isAdmin" class="tab-pane fade" id="reset-password" role="tabpanel"
+            aria-labelledby="pills-settings-tab">
             <!--* change password  -->
             <form #resetPasswordForm="ngForm" (submit)="onResetPassword(resetPasswordForm)">
                 <fieldset>
@@ -132,10 +134,11 @@
                                                             <img class="rounded" height="135" width="135"
                                                                 [src]="user.profileImageUrl" alt="{{ user.username }}">
                                                         </div>
-                                                        <div *ngIf="fileStatus.status === 'progress'" class="progress mt-1">
+                                                        <div *ngIf="fileStatus.status === 'progress'"
+                                                            class="progress mt-1">
                                                             <div class="progress-bar bg-info" role="progressbar"
                                                                 aria-label="Upload image progress" aria-valuenow="0"
-                                                                aria-valuemin="0" aria-valuemax="100" 
+                                                                aria-valuemin="0" aria-valuemax="100"
                                                                 [style.width.%]="fileStatus.percentage">
                                                                 {{ fileStatus.percentage }}%
                                                             </div>
@@ -404,8 +407,8 @@
     </div>
 
     <!--* Modal add user -->
-    <div *ngIf="isAdminOrManager" class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-hidden="true">
+    <div *ngIf="isAdminOrManager" class="modal fade" id="addUserModal" data-bs-backdrop="static"
+        data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -431,7 +434,7 @@
                                 <label for="email">Email</label>
                                 <input type="email" name="email" class="form-control" required ngModel>
                             </div>
-                            <div class="form-group">
+                            <div *ngIf="isAdmin" class="form-group">
                                 <label for="authority">Role</label>
                                 <select name="role" class="form-select" required ngModel="ROLE_USER">
                                     <option value="ROLE_USER">USER</option>
@@ -441,14 +444,18 @@
                                     <option value="ROLE_SUPER_ADMIN">SUPER ADMIN</option>
                                 </select>
                             </div>
+                            <div *ngIf="!isAdmin" class="form-group">
+                                <label for="authority">Role</label>
+                                <input type="text" name="role" class="form-control" readonly required ngModel="USER">
+                            </div>
                             <div class="form-group">
                                 <label class="custom-file-label">
                                     <span [hidden]="!fileName">{{ fileName }}</span>
                                     <span [hidden]="fileName">Choose File</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="file" accept="image/jpeg, image/png, image/gif" name="profileImage" class="form-control"
-                                        (change)="onProfileImageChange($event)">
+                                    <input type="file" accept="image/jpeg, image/png, image/gif" name="profileImage"
+                                        class="form-control" (change)="onProfileImageChange($event)">
                                     <span class="input-group-text">Browse</span>
                                 </div>
                             </div>
@@ -486,7 +493,10 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-center">Edit {{ editUser.firstName }} {{ editUser.lastName }}</h5>
+                    <h5 class="modal-title text-center">
+                        Edit {{ editUser.firstName }} {{ editUser.lastName }}
+                        <small *ngIf="isAdminOrManager">(read only)</small>
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -494,27 +504,28 @@
                         <form #editUserForm="ngForm">
                             <div class="form-group">
                                 <label for="firstName">First Name</label>
-                                <input type="text" name="firstName" class="form-control" required
-                                    [(ngModel)]="editUser.firstName">
+                                <input [disabled]="!isAdminOrManager" type="text" name="firstName" class="form-control"
+                                    required [(ngModel)]="editUser.firstName">
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name</label>
-                                <input type="text" name="lastName" class="form-control" required
-                                    [(ngModel)]="editUser.lastName">
+                                <input [disabled]="!isAdminOrManager" type="text" name="lastName" class="form-control"
+                                    required [(ngModel)]="editUser.lastName">
                             </div>
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input type="text" name="username" class="form-control" required
-                                    [(ngModel)]="editUser.username">
+                                <input [disabled]="!isAdminOrManager" type="text" name="username" class="form-control"
+                                    required [(ngModel)]="editUser.username">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" name="email" class="form-control" required
-                                    [(ngModel)]="editUser.email">
+                                <input [disabled]="!isAdminOrManager" type="email" name="email" class="form-control"
+                                    required [(ngModel)]="editUser.email">
                             </div>
                             <div class="form-group">
-                                <label for="authority">Role</label>
-                                <select name="role" class="form-select" required [(ngModel)]="editUser.role">
+                                <label for="authority">Role <small *ngIf="!isAdmin">(read only)</small></label>
+                                <select [disabled]="!isAdmin" name="role" class="form-select" required
+                                    [(ngModel)]="editUser.role">
                                     <option value="ROLE_USER">USER</option>
                                     <option value="ROLE_HR">HR</option>
                                     <option value="ROLE_MANAGER">MANAGER</option>
@@ -528,24 +539,25 @@
                                     <span [hidden]="fileName">Choose File</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="file" accept="image/jpeg, image/png, image/gif" name="profileImage" class="form-control"
-                                        (change)="onProfileImageChange($event)">
+                                    <input [disabled]="!isAdminOrManager" type="file"
+                                        accept="image/jpeg, image/png, image/gif" name="profileImage"
+                                        class="form-control" (change)="onProfileImageChange($event)">
                                     <span class="input-group-text">Browse</span>
                                 </div>
                             </div>
                             <fieldset class="form-group">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input type="checkbox" name="active" class="form-check-input"
-                                            [(ngModel)]="editUser.active">
-                                        Active
+                                        <input [disabled]="!isManager" type="checkbox" name="active"
+                                            class="form-check-input" [(ngModel)]="editUser.active">
+                                        Active <small *ngIf="!isManager">(read only)</small>
                                     </label>
                                 </div>
                                 <div class="form-check disabled">
                                     <label class="form-check-label">
-                                        <input type="checkbox" name="notLocked" class="form-check-input"
-                                            [(ngModel)]="editUser.notLocked">
-                                        Unlocked
+                                        <input [disabled]="!isManager" type="checkbox" name="notLocked"
+                                            class="form-check-input" [(ngModel)]="editUser.notLocked">
+                                        Unlocked <small *ngIf="!isManager">(read only)</small>
                                     </label>
                                 </div>
                             </fieldset>
@@ -555,7 +567,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="close-edit-user-modal-button"
                         data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" [disabled]="editUserForm.invalid"
+                    <button type="button" class="btn btn-primary" [disabled]="editUserForm.invalid || !isAdminOrManager"
                         (click)="onUpdateUser()">Save changes</button>
                 </div>
             </div>
@@ -564,7 +576,7 @@
 
     <!--* Profile image change form  -->
     <form enctype="multipart/form-data" class="d-none">
-        <input type="file" name="profile-image-input" id="profile-image-input" placeholder="file" accept="image/jpeg, image/png, image/gif"
-            (change)="onProfileImageChange($event); onUpdateProfileImage()">
+        <input type="file" name="profile-image-input" id="profile-image-input" placeholder="file"
+            accept="image/jpeg, image/png, image/gif" (change)="onProfileImageChange($event); onUpdateProfileImage()">
     </form>
 </div>

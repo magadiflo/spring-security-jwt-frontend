@@ -65,6 +65,10 @@ export class UserComponent implements OnInit {
     return this.isAdmin || this.getUserRole() === Role.MANAGER;
   }
 
+  get isAdminOrManager(): boolean {
+    return this.isAdmin || this.isManager;
+  }
+
 
   changeTitle(title: string): void {
     //*Así cambiamos el valor

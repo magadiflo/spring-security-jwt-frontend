@@ -17,7 +17,7 @@
                 <i class="fa fa-users"></i> Users
             </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li *ngIf="isAdmin" class="nav-item" role="presentation">
             <button class="nav-link" id="pills-settings-tab" data-bs-toggle="pill" data-bs-target="#reset-password"
                 type="button" role="tab" aria-selected="false" (click)="changeTitle('Settings')">
                 <i class="fa fa-cogs"></i> Settings
@@ -40,7 +40,7 @@
                             placeholder="Search users..." ngModel
                             (ngModelChange)="searchUsers(searchForm.value.searchTerm.trim())">
                     </form>
-                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                    <button *ngIf="isAdminOrManager" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addUserModal">
                         <i class="fa fa-plus"></i> New User
                     </button>
                 </div>
@@ -85,7 +85,7 @@
                                     (click)="onEditUser(user)">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-danger" aria-label="Delete user"
+                                <button *ngIf="isAdmin" type="button" class="btn btn-outline-danger" aria-label="Delete user"
                                     (click)="onDeleteUser(user)">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -95,7 +95,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="tab-pane fade" id="reset-password" role="tabpanel" aria-labelledby="pills-settings-tab">
+        <div *ngIf="isAdmin" class="tab-pane fade" id="reset-password" role="tabpanel" aria-labelledby="pills-settings-tab">
             <!--* change password  -->
             <form #resetPasswordForm="ngForm" (submit)="onResetPassword(resetPasswordForm)">
                 <fieldset>
@@ -404,7 +404,7 @@
     </div>
 
     <!--* Modal add user -->
-    <div class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div *ngIf="isAdminOrManager" class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
